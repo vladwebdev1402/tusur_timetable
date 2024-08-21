@@ -1,5 +1,7 @@
 import {useEffect, useState} from 'react';
 
+const CORS_LINK = "Перейдите на https://cors-anywhere.herokuapp.com/corsdemo и нажмите 'Request temporary access to the demo server' для обхода CORS";
+
 export const useFetch = <T>(call: () => Promise<T>, deps: unknown[]) => {
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState('');
@@ -12,8 +14,12 @@ export const useFetch = <T>(call: () => Promise<T>, deps: unknown[]) => {
         setError('');
         const response = await call();
         setData(response);
-      } catch {
-        setError('Произошла ошибка');
+      } catch (e) {
+        if (e instanceof Error)
+          setError(
+            e.message + CORS_LINK
+          );
+        else setError('Произошла ошибка. ' + CORS_LINK);
       } finally {
         setIsLoading(false);
       }

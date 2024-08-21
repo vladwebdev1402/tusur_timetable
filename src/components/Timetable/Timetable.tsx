@@ -22,7 +22,7 @@ const Timetable = () => {
   const [currentWeek, setCurrentWeek] = useState(BUTTON_WEEKS[0].weekId);
   const [group, setGroup] = useState(MY_GROUP);
 
-  const {data, isLoading} = useFetch(async () => {
+  const {data, isLoading, error} = useFetch(async () => {
     const response = await Promise.all(
       BUILDINGS.map(async building => {
         const res = await getPage(building, currentWeek);
@@ -57,6 +57,7 @@ const Timetable = () => {
             variant={currentWeek === button.weekId ? 'filled' : 'default'}
             onClick={() => setCurrentWeek(button.weekId)}
             disabled={isLoading && currentWeek !== button.weekId}
+            key={button.weekId}
           >
             <Flex direction="column">
               <Text>{button.parity}</Text>
@@ -73,6 +74,11 @@ const Timetable = () => {
           defaultValue={MY_GROUP}
         />
       </Box>
+      {error && (
+        <Text c="red" ta="center" mt="md">
+          {error}
+        </Text>
+      )}
       {isLoading && (
         <Flex justify="center">
           <Loader h={150} w={150} mt="150px" />
