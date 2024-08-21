@@ -8,5 +8,6 @@ export default defineConfig({
     alias: [
       { find: '@', replacement: path.resolve(__dirname, './src/') },
     ],
-  }
+  },
+  base: 'https://vladwebdev1402.github.io/tusur_timetable',
 })
